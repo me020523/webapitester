@@ -1,12 +1,12 @@
 <jobs>
-	<job id="openstack" info="com.ibm.cpi.watcher.job.openstack.JobInfo">
-		<class name="com.ibm.cpi.watcher.job.openstack.FlavorTest" onFailure="destory_flavor">
-			<case id="create_flavor" method="createFlavor" order="1"/>
-			<case id="destory_flavor" method='deleteFlavor' order="4"/>
+	<job id="openstack">
+		<class name="com.ibm.cpi.watcher.job.openstack.FlavorTest">
+			<case id="create_flavor" methodName="createFlavor" order="1" onFailureMethod="destory_flavor"/>
+			<case id="destory_flavor" methodName='deleteFlavor' order="4"/>
 		</class>
-		<class name="com.ibm.cpi.watcher.job.openstack.KeypairTest" onFailure="destory_keypair">
-			<case id="create_keypair" method="createKeypair" order="2"/>
-			<case id="destroy_keypair" method="deleteKeypair" order="3"/>
+		<class name="com.ibm.cpi.watcher.job.openstack.KeypairTest">
+			<case id="create_keypair" methodName="createKeypair" order="2"  onFailureMethod="destory_keypair"/>
+			<case id="destroy_keypair" methodName="deleteKeypair" order="3"/>
 		</class>
 	</job>
 </jobs>

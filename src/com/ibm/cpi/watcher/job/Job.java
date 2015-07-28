@@ -7,8 +7,19 @@ public class Job
 {
 	private String id = null;
 	
-	public Job(String id)
-	{
+	public List<JobCaseClass> getJobClasses() {
+		return jobClasses;
+	}
+	public void setJobClasses(List<JobCaseClass> jobClasses) {
+		this.jobClasses = jobClasses;
+	}
+	public List<JobCase> getJobCases() {
+		return jobCases;
+	}
+	public void setJobCases(List<JobCase> jobCases) {
+		this.jobCases = jobCases;
+	}
+	public void setId(String id) {
 		this.id = id;
 	}
 	/**

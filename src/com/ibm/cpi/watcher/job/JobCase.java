@@ -7,13 +7,32 @@ public class JobCase implements Comparable<JobCase>
 	private int order;
 	private JobCaseClass jobClass = null;
 	
+	public JobCaseClass getJobClass() {
+		return jobClass;
+	}
+	public void setJobClass(JobCaseClass jobClass) {
+		this.jobClass = jobClass;
+	}
+
+	private String onFailureMethod = null;
 	
-	public JobCase(String id, String methodName, String order, JobCaseClass jobClass)
+	public String getOnFailureMethod() {
+		return onFailureMethod;
+	}
+	public void setOnFailureMethod(String onFailMethod) {
+		this.onFailureMethod = onFailMethod;
+	}
+	public JobCase()
+	{
+		super();
+	}
+	public JobCase(String id, String methodName, String order, JobCaseClass jobClass, String onFailMethod)
 	{
 		this.id = id;
 		this.methodName = methodName;
 		this.order = Integer.valueOf(order);
 		this.jobClass = jobClass;
+		this.onFailureMethod = onFailMethod;
 	}
 	
 	public String getId() {
@@ -36,8 +55,8 @@ public class JobCase implements Comparable<JobCase>
 		return order;
 	}
 
-	public void setOrder(int order) {
-		this.order = order;
+	public void setOrder(String order) {
+		this.order = Integer.valueOf(order);
 	}
 
 	public boolean equals(JobCase jc)
