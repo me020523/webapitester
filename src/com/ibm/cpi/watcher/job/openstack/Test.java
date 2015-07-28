@@ -41,7 +41,8 @@ public class Test
 		{
 			InputStream in = new FileInputStream(f);
 			List<Job> jobs = jf.loadJobsFromXml(in);
-			System.out.println(jobs.size());
+			for(Job job : jobs)
+				job.work();
 		}
 		catch (ParserConfigurationException | SAXException | IOException e)
 		{

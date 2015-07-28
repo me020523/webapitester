@@ -13,7 +13,7 @@ public class KeypairTest {
 		this.jobInfo = jobInfo;
 	}
 	
-	public boolean createKeyPair()
+	public boolean createKeypair()
 	{
 		String name = jobInfo.getKeypairName();
 		Keypair kp = OSClientManager.getInstance().compute().keypairs().create(name, null);
@@ -22,7 +22,7 @@ public class KeypairTest {
 		else
 			return true;
 	}
-	public boolean deleteKeyPair()
+	public boolean deleteKeypair()
 	{
 		String name = jobInfo.getKeypairName();
 		ActionResponse ar = OSClientManager.getInstance().compute().keypairs().delete(name);

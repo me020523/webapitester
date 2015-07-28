@@ -1,5 +1,6 @@
 package com.ibm.cpi.watcher.job;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +22,6 @@ public class Job
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	/**
-	 * the method needed to override
-	 */
-	public void work()
-	{
-		
 	}
 	
 	private List<JobCaseClass> jobClasses = new ArrayList<JobCaseClass>();
@@ -56,5 +50,39 @@ public class Job
 			return true;
 		else
 			return false;
+	}
+	
+	/**
+	 * the method needed to override
+	 */
+	private List<JobCase> finishedCases = new ArrayList<JobCase>();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void work()
+	{
+		try 
+		{
+			for(JobCase jc : jobCases)
+			{
+				String methodName = jc.getMethodName();
+				String className = jc.getJobClass().getName();
+				Class cls = Class.forName(className);
+				Object obj = cls.newInstance();
+				Method m = cls.getMethod(methodName);
+			    Boolean ret = (Boolean)m.invoke(obj);
+			    if(!ret)
+			    {
+			    	throw new Exception();
+			    }
+			}
+		} 
+		catch (Exception e) 
+		{
+			fail();
+			e.printStackTrace();
+		}
+	}
+	public void fail()
+	{
+		System.out.println("sorry, something wrong happens");
 	}
 }
