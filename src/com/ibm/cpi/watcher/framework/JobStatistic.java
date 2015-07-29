@@ -2,6 +2,7 @@ package com.ibm.cpi.watcher.framework;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class JobStatistic
 			return total;
 		}
 		private int total = 0;
-		private Map<String, CaseData> caseData = new HashMap<String, JobStatistic.CaseData>();
+		private Map<String, CaseData> caseData = new LinkedHashMap<String, JobStatistic.CaseData>();
 		public Map<String, CaseData> getCaseData() {
 			return caseData;
 		}
@@ -80,7 +81,7 @@ public class JobStatistic
 		}
 	}
 	
-	private Map<String, JobData> jobData = new HashMap<String, JobData>();
+	private Map<String, JobData> jobData = new LinkedHashMap<String, JobData>();
 	public Map<String, JobData> getJobData()
 	{
 		return jobData;

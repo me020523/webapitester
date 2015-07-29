@@ -95,16 +95,24 @@ public class Job
 			for(JobCase jc : jobCases)
 			{
 				System.out.println("start case: " + jc.getId());
-				boolean ret = doCase(jc);
-			    if(!ret)
-			    {
-			    	JobStatistic.getInstance().fail(this.id, jc.getId());
-			    	throw new Exception();
-			    }
-			    else
-			    {
-			    	finishedCases.add(0, jc);
-			    	JobStatistic.getInstance().success(this.id, jc.getId());
+				try
+				{
+					boolean ret = doCase(jc);
+				    if(!ret)
+				    {
+				    	JobStatistic.getInstance().fail(this.id, jc.getId());
+				    	throw new Exception();
+				    }
+				    else
+				    {
+				    	finishedCases.add(0, jc);
+				    	JobStatistic.getInstance().success(this.id, jc.getId());
+					}
+				}
+				catch(Exception e)
+				{
+					JobStatistic.getInstance().fail(this.id, jc.getId());
+					throw new Exception();
 				}
 			}
 		} 
