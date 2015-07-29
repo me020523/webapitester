@@ -1,7 +1,13 @@
 package com.ibm.cpi.watcher.framework;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class JobStatistic 
 {
@@ -29,6 +35,24 @@ public class JobStatistic
 		public void setCaseData(Map<String, CaseData> caseData) {
 			this.caseData = caseData;
 		}
+		
+		public JSONObject toJson() throws JSONException
+		{
+			JSONObject obj = new JSONObject();
+			obj.put("success", success);
+			obj.put("total", total);
+			List<JSONObject> caseJsons = new ArrayList<JSONObject>();
+			Set<String> keys = caseData.keySet();
+			for(String key : keys)
+			{
+				CaseData cd = caseData.get(key);
+				JSONObject caseJson = cd.toJson();
+				caseJson.put("id", key);
+				caseJsons.add(caseJson);
+			}
+			obj.put("cases", caseJsons);
+			return obj;
+		}
 	}
 	public static class CaseData
 	{
@@ -47,9 +71,20 @@ public class JobStatistic
 		public int getTotal() {
 			return total;
 		}
+		public JSONObject toJson() throws JSONException
+		{
+			JSONObject obj = new JSONObject();
+			obj.put("success", success);
+			obj.put("total", total);
+			return obj;
+		}
 	}
 	
 	private Map<String, JobData> jobData = new HashMap<String, JobData>();
+	public Map<String, JobData> getJobData()
+	{
+		return jobData;
+	}
 	public void addJob(String jobId)
 	{
 		synchronized (jobData) 
@@ -84,6 +119,10 @@ public class JobStatistic
 				jd.success++;
 			}
 		}	
+	}
+	public JobData getJobDataById(String jobId)
+	{
+		return jobData.get(jobId);
 	}
 	public void addCase(String jobId,String caseId)
 	{
@@ -125,5 +164,12 @@ public class JobStatistic
 				jd.getCaseData().get(caseId).total++;
 			}
 		}
+	}
+	public CaseData getCaseDataById(String jobId,String caseId)
+	{
+		JobData jd = jobData.get(jobId);
+		if(jd != null)
+			return jd.getCaseData().get(caseId);
+		return null;
 	}
 }

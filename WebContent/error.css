@@ -1,0 +1,24 @@
+#ibm-content {
+  min-height: 500px;
+}
+
+#ibm-content h1.error {
+  font-family: Arial, sans-serif;
+  font-size: 28px;
+  font-weight: normal;
+  padding-bottom: 15px;
+  color: #333;
+}
+
+#ibm-content h2.error {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  padding: 6px 0px 6px 0px;
+  color: #333;
+}
+
+.ibm-landing-page #ibm-content .ibm-columns p {
+  padding: 6px 0px 6px 0px;
+}
+
