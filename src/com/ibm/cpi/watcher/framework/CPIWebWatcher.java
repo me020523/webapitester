@@ -9,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.ibm.cpi.watcher.framework.job.Job;
+import com.ibm.cpi.watcher.framework.job.JobCase;
 
 public class CPIWebWatcher
 {
@@ -21,9 +22,18 @@ public class CPIWebWatcher
 	private boolean started = false;
 	public synchronized void start() throws ParserConfigurationException, SAXException, IOException
 	{
-		String path = "jobs.xml";
+		String path = "/resource/jobs.xml";
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream(path);
 		List<Job> jobs = JobFactory.getInstance().loadJobsFromXml(in);
+		for(Job job : jobs)
+		{
+			JobStatistic.getInstance().addJob(job.getId());
+			List<JobCase> cases = job.getJobCases();
+			for(JobCase jc : cases)
+			{
+				JobStatistic.getInstance().addCase(job.getId(), jc.getId());
+			}
+		}
 		JobExecutor.getInstance().addJob(jobs);
 		JobExecutor.getInstance().execute();
 		started = true;

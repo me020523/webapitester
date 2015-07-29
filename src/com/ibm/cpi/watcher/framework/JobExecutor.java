@@ -62,6 +62,7 @@ public class JobExecutor
 				@Override
 				public void run() 
 				{
+					System.out.println("start job: " + job.getId());
 					doJob(job);
 					executorService.schedule(this, job.getDelay(), TimeUnit.MILLISECONDS); //repeat to execute this job
 				}
@@ -71,7 +72,6 @@ public class JobExecutor
 	
 	private void doJob(Job job)
 	{
-		JobStatistic.getInstance().addJob(job.getId());
 		try
 		{
 			job.work();
@@ -79,6 +79,7 @@ public class JobExecutor
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			JobStatistic.getInstance().fail(job.getId());
 		}
 	}

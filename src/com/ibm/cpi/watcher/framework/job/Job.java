@@ -39,8 +39,8 @@ public class Job
 	public int getDelay() {
 		return delay;
 	}
-	public void setDelay(int delay) {
-		this.delay = delay;
+	public void setDelay(String delay) {
+		this.delay = Integer.valueOf(delay);
 	}
 	public boolean equals(Job job)
 	{
@@ -94,7 +94,7 @@ public class Job
 		{
 			for(JobCase jc : jobCases)
 			{
-				JobStatistic.getInstance().addCase(this.id, jc.getId());
+				System.out.println("start case: " + jc.getId());
 				boolean ret = doCase(jc);
 			    if(!ret)
 			    {

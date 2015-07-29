@@ -34,6 +34,12 @@ public class FlavorTest
 	{
 		String flavorId = jobInfo.getFlavorId();
 		ActionResponse ar = OSClientManager.getInstance().compute().flavors().delete(flavorId);
+		Flavor flavor = null;
+		do
+		{
+			flavor = OSClientManager.getInstance().compute().flavors().get(flavorId);
+		} 
+		while (flavor != null);
 		jobInfo.setFlavorId(null);
 		return ar.isSuccess();
 	}

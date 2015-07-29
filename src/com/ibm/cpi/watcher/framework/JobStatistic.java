@@ -116,7 +116,7 @@ public class JobStatistic
 			if(jobData.containsKey(jobId))
 			{
 				JobData jd = jobData.get(jobId);
-				jd.success++;
+				jd.total++;
 			}
 		}	
 	}
@@ -130,7 +130,8 @@ public class JobStatistic
 			if(jobData.containsKey(jobId))
 			{
 				JobData jd = jobData.get(jobId);
-				jd.getCaseData().put(caseId, new CaseData());
+				if(!jd.getCaseData().containsKey(caseId))
+					jd.getCaseData().put(caseId, new CaseData());
 			}
 		}
 	}

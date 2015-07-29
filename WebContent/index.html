@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<title>CPI Web Watcher</title>
+    	<link href="css/bootstrap.min.css" rel="stylesheet">
+    	<script src="js/jquery-1.11.3.min.js"></script>
+    	<script src="js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div class="panel panel-default">
+	  		<div class="panel-heading">
+	    		<h3 class="panel-title">CPI Web Watcher</h3>
+	  		</div>
+	  		<div id="container" class="panel-body">
+	  		</div>
+		</div>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				id = setInterval(function(){
+					var url = window.location.href;
+					var i = url.lastIndexOf("/");
+					url = url.substring(0,i) + "/jobs";
+					$.get(url,function(data,status){
+						if(status != "success")
+							return;
+						var json = testJson = eval("(" + data + ")");
+						loadViewFromJson(json);
+					});
+				}, 3000);
+			});
+			function loadViewFromJson(json){
+				var jobs = json.jobs;
+				
+				$("#container").empty();
+				for(var i = 0; i < jobs.length; i++){
+					var job = jobs[i];
+					var html = loadJobPanelFromJson(job);
+					var htmlObj = $(html)
+					$("#container").append(htmlObj);
+				}
+			};
+			function loadJobPanelFromJson(jobJson){
+				var str1 = '<div class="panel panel-default" id="' + jobJson.id + '">' + 
+	  						'<div class="panel-heading">'  + 
+	    						'<div class="row">' + 
+	    							'<div class="col-md-4 panel-title">' + jobJson.id + '</div>' +
+	    							'<div class="col-md-4">' + jobJson.total + '</div>' +
+	    							'<div class="col-md-4">' + jobJson.success + '</div>' +
+	    						'</div>' + 
+	  						'</div>' +
+	  						'<div id="container" class="panel-body">';
+	  						
+				var jsonCases = jobJson.cases;
+				var caseHtml = "";
+				for(var i = 0; i < jsonCases.length; i++){
+					var cj = jsonCases[i];
+					var tmp = '<div class="row">' + 
+	    							'<div class="col-md-4 panel-title">' + cj.id + '</div>' +
+	    							'<div class="col-md-4">' + cj.total + '</div>' +
+	    							'<div class="col-md-4">' + cj.success + '</div>' +
+	    						'</div>';
+	    			caseHtml += tmp;
+				}
+				
+	  			var str2 = '</div>' + 
+						  '</div>';
+						  
+				return str1 + caseHtml + str2;
+			};
+		</script>
+	</body>
+</html>

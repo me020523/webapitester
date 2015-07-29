@@ -25,8 +25,6 @@ import com.ibm.cpi.watcher.framework.job.Job;
 
 public class JobServlet extends HttpServlet
 {
-	
-
 	@Override
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
@@ -61,9 +59,12 @@ public class JobServlet extends HttpServlet
 		for(Job j : jobs)
 		{
 			JobData jd = JobStatistic.getInstance().getJobDataById(j.getId());
+			if(jd == null)
+				continue;
 			try 
 			{
 				JSONObject jdJson = jd.toJson();
+				jdJson.put("id",j.getId());
 				jobJson.add(jdJson);
 			} 
 			catch (JSONException e)
