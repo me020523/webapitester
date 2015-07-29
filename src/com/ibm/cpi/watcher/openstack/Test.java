@@ -1,4 +1,4 @@
-package com.ibm.cpi.watcher.job.openstack;
+package com.ibm.cpi.watcher.openstack;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,8 +10,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import com.ibm.cpi.watcher.JobFactory;
-import com.ibm.cpi.watcher.job.Job;
+import com.ibm.cpi.watcher.framework.JobFactory;
+import com.ibm.cpi.watcher.framework.job.Job;
 
 public class Test 
 {
@@ -41,8 +41,8 @@ public class Test
 		{
 			InputStream in = new FileInputStream(f);
 			List<Job> jobs = jf.loadJobsFromXml(in);
-			for(Job job : jobs)
-				job.work();
+			/*for(Job job : jobs)
+				job.work();*/
 		}
 		catch (ParserConfigurationException | SAXException | IOException e)
 		{

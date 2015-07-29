@@ -1,4 +1,4 @@
-package com.ibm.cpi.watcher.job.openstack;
+package com.ibm.cpi.watcher.openstack;
 
 import org.openstack4j.api.Builders;
 import org.openstack4j.model.compute.ActionResponse;

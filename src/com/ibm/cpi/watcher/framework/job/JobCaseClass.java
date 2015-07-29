@@ -1,4 +1,4 @@
-package com.ibm.cpi.watcher.job;
+package com.ibm.cpi.watcher.framework.job;
 
 public class JobCaseClass
 {

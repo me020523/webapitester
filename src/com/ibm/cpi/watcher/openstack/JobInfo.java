@@ -1,4 +1,4 @@
-package com.ibm.cpi.watcher.job.openstack;
+package com.ibm.cpi.watcher.openstack;
 
 public class JobInfo
 {

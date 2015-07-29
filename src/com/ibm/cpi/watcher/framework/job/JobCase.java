@@ -1,4 +1,4 @@
-package com.ibm.cpi.watcher.job;
+package com.ibm.cpi.watcher.framework.job;
 
 public class JobCase implements Comparable<JobCase>
 {
@@ -14,25 +14,25 @@ public class JobCase implements Comparable<JobCase>
 		this.jobClass = jobClass;
 	}
 
-	private String onFailureMethod = null;
+	private String onFailure = null;
 	
-	public String getOnFailureMethod() {
-		return onFailureMethod;
+	public String getOnFailure() {
+		return onFailure;
 	}
-	public void setOnFailureMethod(String onFailMethod) {
-		this.onFailureMethod = onFailMethod;
+	public void setOnFailure(String onFailMethod) {
+		this.onFailure = onFailMethod;
 	}
 	public JobCase()
 	{
 		super();
 	}
-	public JobCase(String id, String methodName, String order, JobCaseClass jobClass, String onFailMethod)
+	public JobCase(String id, String methodName, String order, JobCaseClass jobClass, String onFail)
 	{
 		this.id = id;
 		this.methodName = methodName;
 		this.order = Integer.valueOf(order);
 		this.jobClass = jobClass;
-		this.onFailureMethod = onFailMethod;
+		this.onFailure = onFail;
 	}
 	
 	public String getId() {

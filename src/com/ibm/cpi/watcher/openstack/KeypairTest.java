@@ -1,11 +1,8 @@
-package com.ibm.cpi.watcher.job.openstack;
+package com.ibm.cpi.watcher.openstack;
 
-import java.security.KeyPair;
 
 import org.openstack4j.model.compute.ActionResponse;
 import org.openstack4j.model.compute.Keypair;
-
-import sun.font.TrueTypeFont;
 
 public class KeypairTest {
 	private JobInfo jobInfo = JobInfo.getInstance();

@@ -1,4 +1,4 @@
-package com.ibm.cpi.watcher;
+package com.ibm.cpi.watcher.framework;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,9 +19,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.ibm.cpi.utils.Utils;
-import com.ibm.cpi.watcher.job.Job;
-import com.ibm.cpi.watcher.job.JobCase;
-import com.ibm.cpi.watcher.job.JobCaseClass;
+import com.ibm.cpi.watcher.framework.job.Job;
+import com.ibm.cpi.watcher.framework.job.JobCase;
+import com.ibm.cpi.watcher.framework.job.JobCaseClass;
 
 /**
  * @author shuaibc
