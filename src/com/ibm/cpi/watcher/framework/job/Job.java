@@ -33,6 +33,15 @@ public class Job
 	{
 		return id;
 	}
+	
+	private int delay = 1000; //milliseconds before the job is executed, default is 1000
+	
+	public int getDelay() {
+		return delay;
+	}
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
 	public boolean equals(Job job)
 	{
 		if(this.id.equals(job.id))

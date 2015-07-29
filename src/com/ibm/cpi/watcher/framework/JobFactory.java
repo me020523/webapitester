@@ -18,10 +18,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.ibm.cpi.utils.Utils;
 import com.ibm.cpi.watcher.framework.job.Job;
 import com.ibm.cpi.watcher.framework.job.JobCase;
 import com.ibm.cpi.watcher.framework.job.JobCaseClass;
+import com.ibm.cpi.watcher.utils.Utils;
 
 /**
  * @author shuaibc

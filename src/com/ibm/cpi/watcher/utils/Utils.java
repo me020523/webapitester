@@ -1,4 +1,4 @@
-package com.ibm.cpi.utils;
+package com.ibm.cpi.watcher.utils;
 
 public class Utils 
 {

@@ -1,5 +1,6 @@
 package com.ibm.cpi.watcher.framework;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -7,44 +8,65 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.ibm.cpi.watcher.framework.job.Job;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 public class JobExecutor 
 {
-	public void executeOnce(List<Job> jobs)
+	private final static JobExecutor instance = new JobExecutor();
+	public static JobExecutor getInstance()
 	{
-		ExecutorService es = Executors.newSingleThreadExecutor();
-		es.execute(new Runnable() 
-		{
-			@Override
-			public void run() {
-				for(Job job : jobs)
-				{
-					doJob(job);
-				}
-			}
-		});
-		es.shutdown();
+		return instance;
 	}
 	
-	/**
-	 * @param jobs
-	 * @param delay, in millisecond
-	 */
-	public void executeRepeat(List<Job> jobs, int delay)
+	private ScheduledExecutorService executorService = null;
+	protected JobExecutor()
 	{
-		ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
-		ses.execute(new Runnable() 
+		int cpus = Runtime.getRuntime().availableProcessors();
+		executorService = Executors.newScheduledThreadPool(cpus);
+	}
+	
+	private List<Job> jobs = java.util.Collections.synchronizedList(new ArrayList<Job>());
+	public List<Job> getJobs()
+	{
+		return this.jobs;
+	}
+	public void addJob(Job job)
+	{
+		jobs.add(job);
+	}
+	public void addJob(List<Job> jobs)
+	{
+		for(Job job : jobs)
 		{
-			@Override
-			public void run() 
+			this.jobs.add(job);
+		}
+	}
+	public void removeJob(Job job)
+	{
+		jobs.remove(job);
+	}
+	public void removeJob(List<Job> jobs)
+	{
+		for(Job job : jobs)
+		{
+			this.jobs.remove(job);
+		}
+	}
+	
+	public void execute()
+	{
+		for(Job job : jobs)
+		{
+			executorService.schedule(new Runnable() 
 			{
-				for(Job job : jobs)
+				@Override
+				public void run() 
 				{
 					doJob(job);
+					executorService.schedule(this, job.getDelay(), TimeUnit.MILLISECONDS); //repeat to execute this job
 				}
-				ses.schedule(this, delay, TimeUnit.MILLISECONDS);
-			}
-		});
+			}, job.getDelay(), TimeUnit.MILLISECONDS);
+		}
 	}
 	
 	private void doJob(Job job)
