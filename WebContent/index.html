@@ -9,12 +9,24 @@
     	<script src="js/jquery-1.11.3.min.js"></script>
     	<script src="js/bootstrap.min.js"></script>
 	</head>
-	<body>
+	<body class="bg-info">
+		<div>
+			<h1 class="text-center">API Web Tester</h1>
+		</div>
+	    
 		<div class="panel panel-default">
-	  		<div class="panel-heading">
-	    		<h3 class="panel-title">CPI Web Watcher</h3>
-	  		</div>
-	  		<div id="container" class="panel-body">
+	  		<div class="panel-body">
+	  			<div class="panel panel-primary">
+		  			<div class="panel-heading">
+			    		<div class="row">
+			    			<div class="col-md-3 ">Title</div>
+			    			<div class="col-md-3 text-center">Total</div>
+			    			<div class="col-md-3 text-center">Success</div>
+			    			<div class="col-md-3 text-center">Ratio</div>
+			    		</div>
+		  			</div>
+	  			</div>
+	  			<div id="container"></div>
 	  		</div>
 		</div>
 		<script type="text/javascript">
@@ -43,25 +55,36 @@
 				}
 			};
 			function loadJobPanelFromJson(jobJson){
-				var str1 = '<div class="panel panel-default" id="' + jobJson.id + '">' + 
+				var str1 = '<div class="panel panel-primary" id="' + jobJson.id + '">' + 
 	  						'<div class="panel-heading">'  + 
 	    						'<div class="row">' + 
-	    							'<div class="col-md-4 panel-title">' + jobJson.id + '</div>' +
-	    							'<div class="col-md-4">' + jobJson.total + '</div>' +
-	    							'<div class="col-md-4">' + jobJson.success + '</div>' +
+	    							'<div class="col-md-3 panel-title">' + jobJson.id + '</div>' +
+	    							'<div class="col-md-3 text-center">' + jobJson.total + '</div>' +
+	    							'<div class="col-md-3 text-center">' + jobJson.success + '</div>' +
+	    							'<div class="col-md-3 text-center">' + (jobJson.success / jobJson.total * 100) + '%' + '</div>' +
 	    						'</div>' + 
 	  						'</div>' +
 	  						'<div id="container" class="panel-body">';
 	  						
 				var jsonCases = jobJson.cases;
 				var caseHtml = "";
+				var currentId = jobJson.current;
 				for(var i = 0; i < jsonCases.length; i++){
 					var cj = jsonCases[i];
-					var tmp = '<div class="row">' + 
-	    							'<div class="col-md-4 panel-title">' + cj.id + '</div>' +
-	    							'<div class="col-md-4">' + cj.total + '</div>' +
-	    							'<div class="col-md-4">' + cj.success + '</div>' +
-	    						'</div>';
+					var tmp = "";
+					if(currentId == cj.id)
+					{
+						tmp = '<div class="row bg-primary">';
+					}
+					else
+					{
+						tmp = '<div class="row">';
+					}
+					tmp += '<div class="col-md-3 panel-title">' + cj.id + '</div>' +
+	    				   '<div class="col-md-3 text-center">' + cj.total + '</div>' +
+	    				   '<div class="col-md-3 text-center">' + cj.success + '</div>' +
+	    				   '<div class="col-md-3 text-center">' + (cj.success / cj.total * 100) + '%' + '</div>'
+	    			tmp += '</div>';
 	    			caseHtml += tmp;
 				}
 				

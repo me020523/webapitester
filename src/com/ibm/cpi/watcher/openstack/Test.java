@@ -49,7 +49,5 @@ public class Test
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		NetworkTest nt = new NetworkTest();
-		nt.setRouterGateway();
 	}
 }

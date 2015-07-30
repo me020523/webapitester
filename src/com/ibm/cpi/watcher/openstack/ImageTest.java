@@ -1,6 +1,8 @@
 package com.ibm.cpi.watcher.openstack;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.openstack4j.api.Builders;
@@ -34,8 +36,19 @@ public class ImageTest
 		String containerFormat = "bare";
 		boolean isPublic = true;
 		
-		InputStream in = this.getClass().getResourceAsStream("resource/root.img");
-		Payload<InputStream> pl = Payloads.create(in);
+		//InputStream in = this.getClass().getResourceAsStream("resource/root.img");
+		//Payload<InputStream> pl = Payloads.create(in);
+		Payload<URL> pl;
+		try 
+		{
+			pl = Payloads.create(new URL("http://9.111.108.67/root.img"));
+		}
+		catch (MalformedURLException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return false;
+		}
 		Image img = getImageByName(name);
 		if(img != null)
 		{
@@ -75,6 +88,7 @@ public class ImageTest
 				
 			i++;
 		}
+		if(i == 2 * 60 * 10) return false;
 		jobInfo.setImageId(img.getId());
 		return true;
 	}
@@ -111,6 +125,7 @@ public class ImageTest
 			}
 			i++;
 		}
+		if(i == 2 * 60 * 5) return false;
 		jobInfo.setImageId(null);
 		System.out.println("deleting a volume done");
 		return true;

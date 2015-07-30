@@ -52,6 +52,8 @@ public class VolumeTest
 				
 			i++;
 		}
+		if(i == 2 * 60 * 5) return false;
+		
 		jobInfo.setVolumeId(v.getId());
 		System.out.println("creating a volume done");
 		return true;
@@ -87,6 +89,8 @@ public class VolumeTest
 			}
 			i++;
 		}
+		if(i == 2 * 60 * 5) return false;
+		
 		jobInfo.setVolumeId(null);
 		System.out.println("deleting a volume done");
 		return true;

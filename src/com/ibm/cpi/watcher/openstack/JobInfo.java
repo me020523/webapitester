@@ -74,4 +74,31 @@ public class JobInfo
 		this.subnetId = subnetId;
 	}
 	
+	private String securityGroupId = null;
+	public String getSecurityGroupId() {
+		return securityGroupId;
+	}
+
+	public void setSecurityGroupId(String securityGroupId) {
+		this.securityGroupId = securityGroupId;
+	}
+	
+	private String securityGroupName = null;
+	public String getSecurityGroupName() {
+		return securityGroupName;
+	}
+
+	public void setSecurityGroupName(String securityGroupName) {
+		this.securityGroupName = securityGroupName;
+	}
+	
+	private String serverId = null;
+	public String getServerId() {
+		return serverId;
+	}
+
+	public void setServerId(String serverId) {
+		this.serverId = serverId;
+	}
+	
 }

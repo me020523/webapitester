@@ -6,9 +6,12 @@ import org.openstack4j.api.Builders;
 import org.openstack4j.api.exceptions.ResponseException;
 import org.openstack4j.model.compute.ActionResponse;
 import org.openstack4j.model.compute.Flavor;
+import org.openstack4j.model.network.AttachInterfaceType;
 import org.openstack4j.model.network.IPVersionType;
 import org.openstack4j.model.network.Network;
 import org.openstack4j.model.network.Router;
+import org.openstack4j.model.network.SecurityGroup;
+import org.openstack4j.model.network.SecurityGroupRule;
 import org.openstack4j.model.network.Subnet;
 
 public class NetworkTest 
@@ -35,11 +38,15 @@ public class NetworkTest
 		{
 			try
 			{
+				Network network = getNetworkByName("ext-net");
+				if(network == null)
+					return false;
 				route = OSClientManager.getInstance()
 						.networking()
 						.router()
 						.create(Builders.router()
 								.name(name)
+								.externalGateway(network.getId())
 								.build());
 				break;
 			} 
@@ -47,7 +54,7 @@ public class NetworkTest
 			{
 				if(e.getStatus() == 409)
 				{
-					//this flavor already exsits, so must wait until it has been deleted
+					//this router already exsits, so must wait until it has been deleted
 					try 
 					{
 						Router f = getRouterByName(name);
@@ -119,7 +126,7 @@ public class NetworkTest
 			{
 				if(e.getStatus() == 409)
 				{
-					//this flavor already exsits, so must wait until it has been deleted
+					//this network already exsits, so must wait until it has been deleted
 					try 
 					{
 						Network f = getNetworkByName(name);
@@ -235,15 +242,89 @@ public class NetworkTest
 		jobInfo.setSubnetId(null);
 		return ar.isSuccess();
 	}
-	public boolean setRouterGateway()
+	
+	public boolean createSecurityGroup()
 	{
-		@SuppressWarnings("unchecked")
-		List<Network> nets = (List<Network>) OSClientManager.getInstance().networking().network().list();
-		for(Network net : nets)
+		String name = "Test OS SG";
+		String desc = "Test OS SG";
+		SecurityGroup sg = Builders.securityGroup()
+							.name(name)
+							.description(desc)
+							.build();
+		
+		int i = 0;
+		while(i < 10)
 		{
-			System.out.println(net.getName());
+			try
+			{
+				sg = OSClientManager.getInstance().networking().securitygroup().create(sg);
+				SecurityGroupRule rule = Builders.securityGroupRule()
+										.securityGroupId(sg.getId())
+										.direction("ingress")
+										.portRangeMin(1)
+										.portRangeMax(65535)
+										.protocol("tcp")
+										.ethertype("IPv4")
+										.remoteIpPrefix("0.0.0.0/0")
+										.build();
+				OSClientManager.getInstance().networking().securityrule().create(rule);
+				rule = Builders.securityGroupRule()
+								.securityGroupId(sg.getId())
+								.protocol("udp")
+								.direction("ingress")
+								.portRangeMin(1)
+								.portRangeMax(65535)
+								.ethertype("IPv4")
+								.remoteIpPrefix("0.0.0.0/0")
+								.build();
+				OSClientManager.getInstance().networking().securityrule().create(rule);
+				rule = Builders.securityGroupRule()
+								.securityGroupId(sg.getId())
+								.protocol("icmp")
+								.direction("ingress")
+								.remoteIpPrefix("0.0.0.0/0")
+								.build();
+				OSClientManager.getInstance().networking().securityrule().create(rule);
+				break;
+			} 
+			catch (ResponseException e)
+			{
+				if(e.getStatus() == 409)
+				{
+					//this security group already exsits, so must wait until it has been deleted
+					try 
+					{
+						SecurityGroup tmp = OSClientManager.getInstance().networking().securitygroup().get(sg.getId());
+						if(tmp != null)
+							OSClientManager.getInstance().networking().securitygroup().get(sg.getId());
+						System.out.println("the security group already exsits, so we must sleep for a short time: " + i);
+						Thread.sleep(500);
+					} 
+					catch (InterruptedException e1) 
+					{
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				else
+				{
+					return false;
+				}
+			}
+			i++;
 		}
-		Router router = OSClientManager.getInstance().networking().router().get(jobInfo.getRouterId());
+		if(i == 10) return false;
+		
+		jobInfo.setSecurityGroupId(sg.getId());
+		jobInfo.setSecurityGroupName(name);
 		return true;
+	}
+	public boolean deleteSecurityGroup()
+	{
+		String id = jobInfo.getSecurityGroupId();
+		ActionResponse ar = OSClientManager.getInstance().networking().securitygroup().delete(id);
+		jobInfo.setSecurityGroupId(null);
+		jobInfo.setSecurityGroupName(null);
+		return ar.isSuccess();
 	}
 }

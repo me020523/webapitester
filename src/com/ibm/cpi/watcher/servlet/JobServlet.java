@@ -65,6 +65,7 @@ public class JobServlet extends HttpServlet
 			{
 				JSONObject jdJson = jd.toJson();
 				jdJson.put("id",j.getId());
+				jdJson.put("current", j.getCurrentCase().getId());
 				jobJson.add(jdJson);
 			} 
 			catch (JSONException e)
