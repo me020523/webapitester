@@ -101,7 +101,7 @@ public class Job
 				    if(!ret)
 				    {
 				    	JobStatistic.getInstance().fail(this.id, jc.getId());
-				    	throw new Exception();
+				    	throw new Exception("fail to do the case: " + jc.getId());
 				    }
 				    else
 				    {
@@ -111,16 +111,16 @@ public class Job
 				}
 				catch(Exception e)
 				{
-					JobStatistic.getInstance().fail(this.id, jc.getId());
-					throw new Exception();
+					throw new Exception(e.getCause());
 				}
 			}
 		} 
 		catch (Exception e) 
 		{
 			fail();
-			throw e;
+			throw new Exception(e.getCause());
 		}
+		finishedCases.clear();
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public boolean doCase(JobCase c) throws ClassNotFoundException, InstantiationException, 
@@ -141,15 +141,26 @@ public class Job
 	{
 		for(JobCase jc : finishedCases)
 		{
-			try 
+			JobCase failCase = null;
+			try
 			{
-				boolean ret = doCase(jc);
-				if(!ret)
-					throw new Exception();
-			} 
-			catch (Exception e)
+				failCase = this.getCaseById(jc.getOnFailure());
+				if(failCase == null)
+					continue;
+				System.out.println("start case: " + failCase.getId());
+				boolean ret = doCase(failCase);
+			    if(!ret)
+			    {
+			    	JobStatistic.getInstance().fail(this.id, failCase.getId());
+			    }
+			    else
+			    {
+			    	JobStatistic.getInstance().success(this.id, failCase.getId());
+				}
+			}
+			catch(Exception e)
 			{
-				
+				e.printStackTrace();
 			}
 		}
 	}

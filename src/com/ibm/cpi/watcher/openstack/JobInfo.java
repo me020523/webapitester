@@ -37,4 +37,41 @@ public class JobInfo
 	public void setVolumeId(String volumeId) {
 		this.volumeId = volumeId;
 	}
+	
+	private String imageId = null;
+	public String getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(String imageId) {
+		this.imageId = imageId;
+	}
+	
+	private String routerId = null;
+	public String getRouterId() {
+		return routerId;
+	}
+
+	public void setRouterId(String routerId) {
+		this.routerId = routerId;
+	}
+	
+	private String networkId = null;
+	public String getNetworkId() {
+		return networkId;
+	}
+
+	public void setNetworkId(String networkId) {
+		this.networkId = networkId;
+	}
+	
+	private String subnetId = null;
+	public String getSubnetId() {
+		return subnetId;
+	}
+
+	public void setSubnetId(String subnetId) {
+		this.subnetId = subnetId;
+	}
+	
 }

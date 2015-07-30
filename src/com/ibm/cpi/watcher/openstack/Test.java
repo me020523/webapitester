@@ -34,20 +34,22 @@ public class Test
 			e.printStackTrace();
 		}
 		test.deleteVolume();*/
-		JobFactory jf = JobFactory.getInstance();
+		/*JobFactory jf = JobFactory.getInstance();
 		File f = new File("C:\\Users\\IBM_ADMIN\\git\\cpiwebwatcher\\src\\resource\\jobs.xml");
 		
 		try 
 		{
 			InputStream in = new FileInputStream(f);
 			List<Job> jobs = jf.loadJobsFromXml(in);
-			/*for(Job job : jobs)
-				job.work();*/
+			for(Job job : jobs)
+				job.work();
 		}
 		catch (ParserConfigurationException | SAXException | IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
+		NetworkTest nt = new NetworkTest();
+		nt.setRouterGateway();
 	}
 }

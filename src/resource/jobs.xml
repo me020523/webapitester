@@ -1,12 +1,29 @@
 <jobs>
-	<job id="openstack" delay="1000">
+	<job id="openstack" delay="3000">
 		<class name="com.ibm.cpi.watcher.openstack.FlavorTest">
-			<case id="create_flavor" methodName="createFlavor" order="1" onFailure="destory_flavor"/>
-			<case id="destory_flavor" methodName='deleteFlavor' order="4"/>
+			<case id="create_flavor" methodName="createFlavor" order="1" onFailure="destroy_flavor"/>
+			<case id="destroy_flavor" methodName='deleteFlavor' order="13"/>
 		</class>
 		<class name="com.ibm.cpi.watcher.openstack.KeypairTest">
-			<case id="create_keypair" methodName="createKeypair" order="2"  onFailure="destory_keypair"/>
-			<case id="destroy_keypair" methodName="deleteKeypair" order="3"/>
+			<case id="create_keypair" methodName="createKeypair" order="2"  onFailure="destroy_keypair"/>
+			<case id="destroy_keypair" methodName="deleteKeypair" order="12"/>
+		</class>
+		<!-- <class name="com.ibm.cpi.watcher.openstack.VolumeTest">
+			<case id="create_volume" methodName="createVolume" order="3"  onFailure="destroy_volume"/>
+			<case id="destroy_volume" methodName="deleteVolume" order="8"/>
+		</class>
+		<class name="com.ibm.cpi.watcher.openstack.ImageTest">
+			<case id="create_image" methodName="createImage" order="4"  onFailure="destroy_image"/>
+			<case id="destroy_image" methodName="deleteImage" order="7"/>
+		</class> -->
+		<class name="com.ibm.cpi.watcher.openstack.NetworkTest">
+			<case id="create_network" methodName="createNetwork" order="5"  onFailure="destroy_network"/>
+			<case id="create_subnet" methodName="createSubnet" order="6"  onFailure="destroy_subnet"/>
+			<case id="create_router" methodName="createRouter" order="7"  onFailure="destroy_router"/>
+			<case id="set_router_gateway" methodName="setRouterGateway" order="8"/>
+			<case id="destroy_router" methodName="deleteRouter" order="9"/>
+			<case id="destroy_subnet" methodName="deleteSubnet" order="10"/>
+			<case id="destroy_network" methodName="deleteNetwork" order="11"/>
 		</class>
 	</job>
 </jobs>
