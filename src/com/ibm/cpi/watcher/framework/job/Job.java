@@ -75,7 +75,7 @@ public class Job
 	}
 	public void sortCase()
 	{
-		jobCases.sort(null);
+		Collections.sort(jobCases);
 	}
 	public JobCase getCaseById(String id)
 	{

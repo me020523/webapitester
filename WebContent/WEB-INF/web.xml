@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-  Licensed Materials - Property of IBM
-  5725-S00 (C) Copyright IBM Corp. 2013, 2014. All Rights Reserved.
-  US Government Users Restricted Rights - Use, duplication or
-  disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
--->
-<web-app id="LoginServer" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-	<display-name>CPIWebWatcher</display-name>
-	<description>The CPI Watcher via Web</description>
-	
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name>APIWebTestor</display-name>
+	<description>The API Web Testor</description>
 	<servlet>
 		<servlet-name>jobs</servlet-name>
 		<servlet-class>com.ibm.cpi.watcher.servlet.JobServlet</servlet-class>

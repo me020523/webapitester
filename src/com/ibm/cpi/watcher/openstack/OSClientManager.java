@@ -11,7 +11,7 @@ public class OSClientManager
 		synchronized (OSClientManager.class)
 		{
 			instance = OSFactory.builder()
-					.endpoint("http://9.112.242.116:5000/v2.0")
+					.endpoint("http://9.111.109.100:5000/v2.0")
 					.credentials("cpiwatcher","password")
 					.tenantName("cpiwatcher")
 					.authenticate();

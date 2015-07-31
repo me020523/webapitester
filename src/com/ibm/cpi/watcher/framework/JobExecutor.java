@@ -55,7 +55,7 @@ public class JobExecutor
 	
 	public void execute()
 	{
-		for(Job job : jobs)
+		for(final Job job : jobs)
 		{
 			executorService.schedule(new Runnable() 
 			{
