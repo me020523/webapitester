@@ -66,7 +66,7 @@ public class JobExecutor
 					doJob(job);
 					executorService.schedule(this, job.getJobDelay(), TimeUnit.MILLISECONDS); //repeat to execute this job
 				}
-			}, job.getJobDelay(), TimeUnit.MILLISECONDS);
+			}, 500, TimeUnit.MILLISECONDS);
 		}
 	}
 	
