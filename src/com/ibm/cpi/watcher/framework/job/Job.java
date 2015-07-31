@@ -34,14 +34,24 @@ public class Job
 		return id;
 	}
 	
-	private int delay = 1000; //milliseconds before the job is executed, default is 1000
+	private int jobDelay = 1000; //milliseconds before the job is executed, default is 1000
 	
-	public int getDelay() {
-		return delay;
+	public int getJobDelay() {
+		return jobDelay;
 	}
-	public void setDelay(String delay) {
-		this.delay = Integer.valueOf(delay);
+	public void setJobDelay(String delay) {
+		this.jobDelay = Integer.valueOf(delay);
 	}
+	
+	private int caseDelay = 1000; //milliseconds before the job is executed, default is 1000
+	
+	public int getCaseDelay() {
+		return caseDelay;
+	}
+	public void setCaseDelay(String delay) {
+		this.caseDelay = Integer.valueOf(delay);
+	}
+	
 	public boolean equals(Job job)
 	{
 		if(this.id.equals(job.id))
@@ -49,6 +59,8 @@ public class Job
 		else
 			return false;
 	}
+	
+	
 	
 	private List<JobCaseClass> jobClasses = new ArrayList<JobCaseClass>();
 	public void addCaseClass(JobCaseClass jc)
@@ -88,15 +100,43 @@ public class Job
 	{
 		return currentCase;
 	}
+	private boolean isFailureCase(JobCase jc)
+	{
+		for(JobCase c : finishedCases)
+			if(jc.getId().equals(c.getOnFailure()))
+				return true;
+		return false;
+	}
+	private JobCase getFinishedCaseByFailureCaseId(String id)
+	{
+		for(JobCase c : finishedCases)
+			if(c.getOnFailure().equals(id))
+				return c;
+		return null;
+	}
 	public void work() throws Exception
 	{
 		try 
 		{
 			for(JobCase jc : jobCases)
 			{
+				try
+				{
+					Thread.sleep(this.getCaseDelay());
+				}
+				catch(InterruptedException e)
+				{
+					e.printStackTrace();
+				}
 				System.out.println("start case: " + jc.getId());
 				try
 				{
+					if(isFailureCase(jc))
+			    	{
+			    		JobCase c = getFinishedCaseByFailureCaseId(jc.getId());
+			    		if(c != null)
+			    			finishedCases.remove(c);
+			    	}
 					boolean ret = doCase(jc);
 				    if(!ret)
 				    {
@@ -105,7 +145,10 @@ public class Job
 				    }
 				    else
 				    {
-				    	finishedCases.add(0, jc);
+				    	if(!isFailureCase(jc) && jc.getOnFailure() != null)
+				    	{
+				    		finishedCases.add(0, jc);
+				    	}
 				    	JobStatistic.getInstance().success(this.id, jc.getId());
 					}
 				}
@@ -114,13 +157,16 @@ public class Job
 					throw new Exception(e.getCause());
 				}
 			}
-		} 
+		}
 		catch (Exception e) 
 		{
 			fail();
 			throw new Exception(e.getCause());
 		}
-		finishedCases.clear();
+		finally
+		{
+			finishedCases.clear();
+		}
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public boolean doCase(JobCase c) throws ClassNotFoundException, InstantiationException, 

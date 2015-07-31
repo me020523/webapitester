@@ -9,17 +9,19 @@
     	<script src="js/jquery-1.11.3.min.js"></script>
     	<script src="js/bootstrap.min.js"></script>
 	</head>
-	<body class="bg-info">
-		<div>
-			<h1 class="text-center">API Web Tester</h1>
+	<body>
+		<div class="panel panel-primary" style="margin-bottom:10px;">
+			<div class="panel-heading">
+				<h1 class="text-center">API Web Tester</h1>
+			</div>
 		</div>
-	    
-		<div class="panel panel-default">
+		
+		<div class="panel bg-info center-block" style="width:90%;">
 	  		<div class="panel-body">
 	  			<div class="panel panel-primary">
 		  			<div class="panel-heading">
 			    		<div class="row">
-			    			<div class="col-md-3 ">Title</div>
+			    			<div class="col-md-3 ">ID</div>
 			    			<div class="col-md-3 text-center">Total</div>
 			    			<div class="col-md-3 text-center">Success</div>
 			    			<div class="col-md-3 text-center">Ratio</div>
@@ -54,6 +56,13 @@
 					$("#container").append(htmlObj);
 				}
 			};
+			function calcRation(success,total)
+			{
+				if(total == 0){
+					return 0;
+				}
+				return (Math.round(success * 10000 / total) / 100);
+			};
 			function loadJobPanelFromJson(jobJson){
 				var str1 = '<div class="panel panel-primary" id="' + jobJson.id + '">' + 
 	  						'<div class="panel-heading">'  + 
@@ -61,7 +70,7 @@
 	    							'<div class="col-md-3 panel-title">' + jobJson.id + '</div>' +
 	    							'<div class="col-md-3 text-center">' + jobJson.total + '</div>' +
 	    							'<div class="col-md-3 text-center">' + jobJson.success + '</div>' +
-	    							'<div class="col-md-3 text-center">' + (jobJson.success / jobJson.total * 100) + '%' + '</div>' +
+	    							'<div class="col-md-3 text-center">' + calcRation(jobJson.success, jobJson.total) + '%' + '</div>' +
 	    						'</div>' + 
 	  						'</div>' +
 	  						'<div id="container" class="panel-body">';
@@ -83,7 +92,7 @@
 					tmp += '<div class="col-md-3 panel-title">' + cj.id + '</div>' +
 	    				   '<div class="col-md-3 text-center">' + cj.total + '</div>' +
 	    				   '<div class="col-md-3 text-center">' + cj.success + '</div>' +
-	    				   '<div class="col-md-3 text-center">' + (cj.success / cj.total * 100) + '%' + '</div>'
+	    				   '<div class="col-md-3 text-center">' + calcRation(cj.success, cj.total) + '%' + '</div>'
 	    			tmp += '</div>';
 	    			caseHtml += tmp;
 				}

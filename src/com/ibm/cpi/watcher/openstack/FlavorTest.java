@@ -79,9 +79,17 @@ public class FlavorTest
 	}
 	public boolean deleteFlavor()
 	{
-		String flavorId = jobInfo.getFlavorId();
-		ActionResponse ar = OSClientManager.getInstance().compute().flavors().delete(flavorId);
-		jobInfo.setFlavorId(null);
-		return ar.isSuccess();
+		try
+		{
+			String flavorId = jobInfo.getFlavorId();
+			ActionResponse ar = OSClientManager.getInstance().compute().flavors().delete(flavorId);
+			jobInfo.setFlavorId(null);
+			return ar.isSuccess();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

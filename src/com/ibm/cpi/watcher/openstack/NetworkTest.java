@@ -10,6 +10,7 @@ import org.openstack4j.model.network.AttachInterfaceType;
 import org.openstack4j.model.network.IPVersionType;
 import org.openstack4j.model.network.Network;
 import org.openstack4j.model.network.Router;
+import org.openstack4j.model.network.RouterInterface;
 import org.openstack4j.model.network.SecurityGroup;
 import org.openstack4j.model.network.SecurityGroupRule;
 import org.openstack4j.model.network.Subnet;
@@ -41,13 +42,19 @@ public class NetworkTest
 				Network network = getNetworkByName("ext-net");
 				if(network == null)
 					return false;
-				route = OSClientManager.getInstance()
-						.networking()
-						.router()
-						.create(Builders.router()
-								.name(name)
-								.externalGateway(network.getId())
-								.build());
+				route = getRouterByName(name);
+				if(route == null)
+				{
+					route = OSClientManager.getInstance()
+							.networking()
+							.router()
+							.create(Builders.router()
+									.name(name)
+									.externalGateway(network.getId())
+									.build());
+				}
+				OSClientManager.getInstance().networking().router()
+                        .attachInterface(route.getId(), AttachInterfaceType.SUBNET, jobInfo.getSubnetId());
 				break;
 			} 
 			catch (ResponseException e)
@@ -83,10 +90,20 @@ public class NetworkTest
 	}
 	public boolean deleteRouter()
 	{
-		String id = jobInfo.getRouterId();
-		ActionResponse ar = OSClientManager.getInstance().networking().router().delete(id);
-		jobInfo.setRouterId(null);
-		return ar.isSuccess();
+		try
+		{
+			String id = jobInfo.getRouterId();
+			RouterInterface ri = OSClientManager.getInstance().networking().router()
+	                .detachInterface(id,jobInfo.getSubnetId(),null);
+			ActionResponse ar = OSClientManager.getInstance().networking().router().delete(id);
+			jobInfo.setRouterId(null);
+			return ar.isSuccess();
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	protected Network getNetworkByName(String name)

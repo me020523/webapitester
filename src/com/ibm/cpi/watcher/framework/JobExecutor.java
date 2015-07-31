@@ -64,9 +64,9 @@ public class JobExecutor
 				{
 					System.out.println("start the job: " + job.getId());
 					doJob(job);
-					executorService.schedule(this, job.getDelay(), TimeUnit.MILLISECONDS); //repeat to execute this job
+					executorService.schedule(this, job.getJobDelay(), TimeUnit.MILLISECONDS); //repeat to execute this job
 				}
-			}, job.getDelay(), TimeUnit.MILLISECONDS);
+			}, job.getJobDelay(), TimeUnit.MILLISECONDS);
 		}
 	}
 	

@@ -35,7 +35,7 @@ public class KeypairTest {
 						Keypair f = getKeypairByName(name);
 						if(f != null)
 							OSClientManager.getInstance().compute().keypairs().delete(name);
-						System.out.println("the flavor already exsits, so we must sleep for a short time: " + i);
+						System.out.println("the keypair already exsits, so we must sleep for a short time: " + i);
 						Thread.sleep(500);
 					} 
 					catch (InterruptedException e1) 

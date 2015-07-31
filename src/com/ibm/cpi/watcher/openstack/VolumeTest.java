@@ -1,7 +1,10 @@
 package com.ibm.cpi.watcher.openstack;
 
+import java.util.List;
+
 import org.openstack4j.api.Builders;
 import org.openstack4j.model.compute.ActionResponse;
+import org.openstack4j.model.image.Image;
 import org.openstack4j.model.storage.block.Volume;
 import org.openstack4j.model.storage.block.Volume.Status;
 
@@ -13,14 +16,35 @@ public class VolumeTest
 	public void setJobInfo(JobInfo jobInfo) {
 		this.jobInfo = jobInfo;
 	}
-	
+	protected Volume getVolumeByName(String name)
+	{
+		@SuppressWarnings("unchecked")
+		List<Volume> vols = (List<Volume>) OSClientManager.getInstance().blockStorage().volumes().list();
+		for(Volume vol : vols)
+		{
+			if(vol.getName().equals(name))
+				return vol;
+		}
+		return null;
+	}
 	public boolean createVolume(){
 		String name = "Test Vol 20G";
-		String desc = name;
+		String desc = name; 
 		int size = 20;
 		System.out.println("create a volume");
 		
-		Volume v = OSClientManager.getInstance().blockStorage().volumes().create(
+		Volume v = getVolumeByName(name);
+		if(v != null && v.getStatus().equals(Status.AVAILABLE))
+		{
+			jobInfo.setVolumeId(v.getId());
+			System.out.println("creating a volume done");
+			return true;
+		}
+		else if (v != null && v.getStatus().equals(Status.CREATING))
+		{
+			ActionResponse ar = OSClientManager.getInstance().blockStorage().volumes().delete(v.getId());
+		}
+		v = OSClientManager.getInstance().blockStorage().volumes().create(
 				Builders.volume()
 				.name(name)
 				.description(desc)

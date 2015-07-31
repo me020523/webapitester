@@ -101,4 +101,21 @@ public class JobInfo
 		this.serverId = serverId;
 	}
 	
+	private String floatingIPId = null;
+	public String getFloatingIPId() {
+		return floatingIPId;
+	}
+
+	public void setFloatingIPId(String floatingIPId) {
+		this.floatingIPId = floatingIPId;
+	}
+	public String floatingIPAddress = null;
+	public String getFloatingIPAddress() {
+		return floatingIPAddress;
+	}
+
+	public void setFloatingIPAddress(String floatingIPAddress) {
+		this.floatingIPAddress = floatingIPAddress;
+	}
+	
 }
